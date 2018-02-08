@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = 'json';
+        xhr.open("GET", "http://localhost:3000/?query={user(id:2){name}}", true);
+        xhr.onload = function () {
+            console.log('data returned:', xhr.response);
+        }
+        xhr.send();
+    </script>
 </body>
 </html>
