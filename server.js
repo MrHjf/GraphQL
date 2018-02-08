@@ -1,32 +1,28 @@
-import express from 'express'
-import Schema from './src/schema'
-import graphqlHTTP from 'express-graphql'
+import express from 'express';
+import {
+    graphqlExpress,
+    graphiqlExpress,
+} from 'apollo-server-express';
+import bodyParser from 'body-parser';
+import schema from './src/schema/schema';    // 定义GraphQL查询格式
 
-const app = express();
-const port = 3005;
+const GRAPHQL_PORT = 3002;
 
-app.use('*', function(res, req, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Content-Type', 'application/json;charset=utf-8');
-    next();
+const graphQLServer = express();
+
+graphQLServer.use('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, accept, origin, content-type");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", ' 3.2.1');
+    res.header("Content-Type", "application/json;charset=utf-8");
+    if (req.method === 'OPTIONS') res.send(200);
+    else next();
 });
 
-app.use('/', test, graphqlHTTP({
-    schema: Schema,
-    graphiql: true
-}));
+graphQLServer.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));    // 实现GraphQL接口功能
+graphQLServer.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));    // 实现GraphQL浏览器调试界面
 
-
-function test(res, req, next) {
-    next();
-}
-
-let server = app.listen(port, function () {
-    let addr = server.address();
-    let bind = typeof addr === 'string'? 'pipe ' + addr : 'port' + addr.port;
-    console.log('listening on ' + bind);
-});
-
+graphQLServer.listen(GRAPHQL_PORT, () => console.log(
+    `GraphiQL is now running on http://localhost:${GRAPHQL_PORT}/graphiql`
+));

@@ -17,7 +17,7 @@
   },
   "scripts": {
     "react-start": "react-scripts start",
-    "start": "concurrently \"npm run react-start\" \"cd .. && npm run start2\"",
+    "start": "concurrently \"npm run react-start\" \"cd .. && npm run start\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
