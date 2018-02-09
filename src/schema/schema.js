@@ -19,8 +19,12 @@ type Post {    # 帖子的字段有下面这些，包括 这个帖子是哪个�
   author: Author
 }
 type Query {    # 定义查询内容
-  author(firstName: String, lastName: String): Author # 查询作者信息
-  getFortuneCookie: String
+  author(id: Int!): Author # 查询作者信息
+  allAuthor: [Author]
+}
+type Mutation{
+  updateAuthor(id: Int!, firstName: String!): Author
+  deleteAuthor(id: Int!): [Author]
 }
 `;
 
