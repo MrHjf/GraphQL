@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import logo from '../../static/logo.svg';
 import './App.css';
 import gql from 'graphql-tag';
@@ -21,7 +21,16 @@ import {withApollo} from 'react-apollo';
 // };
 
 class channelList extends Component {
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            offset: 0,
+            limit: 2,
+            firstName: '',
+            lastName: ''
+        };
+    }
     onClick() {
         this.props.update({
             variables: {id: 1, firstName: 'author'}
@@ -34,6 +43,44 @@ class channelList extends Component {
             variables: {id: 4}
         }).then(this.props.data.refetch())
             .catch(error => console.log(error))
+    }
+
+    addAuthor() {
+        console.log(this.state);
+        this.props.add({
+            variables: {input: {firstName: this.state.firstName, lastName: this.state.lastName}},
+        })
+    }
+
+    _handlePage(type) {
+        let {offset, limit} = this.state;
+        offset = type === 'next' ? offset + limit : offset - limit;
+        this.setState({offset}, this.fetchMore);
+    }
+
+    fetchMore() {
+        this.props.data.fetchMore({
+            variables: {
+                offset: this.state.offset
+            },
+            updateQuery: (previousResult, { fetchMoreResult, queryVariables }) => {
+                console.log(previousResult, fetchMoreResult, queryVariables);
+                return {
+                    ...fetchMoreResult
+                }
+            },
+        })
+    }
+
+    getFirstName(e) {
+        this.setState({
+            firstName: e.target.value
+        })
+    }
+    getLastName(e) {
+        this.setState({
+            lastName: e.target.value
+        })
     }
 
     render() {
@@ -50,6 +97,9 @@ class channelList extends Component {
                 <li>{author.id}</li>
                 <li>{author.firstName}</li>
                 <li>{author.lastName}</li>
+                <li><input type="text" name="firstName" onChange={this.getFirstName.bind(this)} value={this.state.firstName}/></li>
+                <li><input type="text" name="lastName" onChange={this.getLastName.bind(this)} value={this.state.lastName}/></li>
+                <li><button onClick={this.addAuthor.bind(this)}>add</button></li>
                 <button onClick={this.onClick.bind(this)}>update(1)</button>
                 <button onClick={this.onDelete.bind(this)}>delete(2)</button>
                 {allAuthor.map((author, index) => <ul key={index}>
@@ -57,6 +107,8 @@ class channelList extends Component {
                     <li>{author.firstName}</li>
                     <li>{author.lastName}</li>
                 </ul>)}
+                <button onClick={() => this._handlePage("prev")}>prev</button>
+                <button onClick={() => this._handlePage("next")}>next</button>
             </ul>
         )
     }
@@ -68,12 +120,15 @@ const queryDef = gql`
         firstName,
         lastName
     }
-    query add($id: Int!){
+    query getAuthor($id: Int!, $limit: Int, $offset: Int){
         author(id: $id){
             ...AuthorInfo
         },
-        allAuthor {
-            ...AuthorInfo
+        allAuthor(limit: $limit, offset: $offset) {
+            ... on Author{
+                id,
+                firstName
+            }
         }
     }
 `;
@@ -91,11 +146,18 @@ const mutationDef2 = gql`
     mutation delete($id: Int!) {
         deleteAuthor(id: $id) {
             id,
-            firstName,
+            firstName,  
             lastName
         }
     }
 `;
+const mutationDef3 = gql`
+    mutation add($input: addAuthorInput!) {
+        addAuthor(input: $input) {
+            id
+        }
+    }
+`
 
 // const QueryWithData = graphql(queryDef,{
 //     options: {variables: {firstName: 'hello'}},
@@ -111,7 +173,8 @@ const mutationDef2 = gql`
 const QueryWithData = compose(
     graphql(queryDef, {options: {variables: {id: 1}}}),
     graphql(mutationDef, {name: 'update'}),
-    graphql(mutationDef2, {name: 'delete'})
+    graphql(mutationDef2, {name: 'delete'}),
+    graphql(mutationDef3, {name: 'add'})
 )(channelList);
 
 class App extends Component {

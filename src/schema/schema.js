@@ -5,32 +5,43 @@ import resolvers from './resolvers';
 
 // 定义schema
 const typeDefs = `
-type Author {   # 作者的字段有：id，名字，还有 发表的帖子
+interface AuthorInterface{
+  firstName: String
+}
+type AuthorDetail{
+  age: Int
+}
+type Author implements AuthorInterface{
   id: Int
   firstName: String
   lastName: String
-  posts: [Post]
+  posts: [Post],
+  authorDetail: AuthorDetail,
 }
-type Post {    # 帖子的字段有下面这些，包括 这个帖子是哪个作者写的
+type Post {
   id: Int
   title: String
   text: String
   views: Int
   author: Author
 }
-type Query {    # 定义查询内容
-  author(id: Int!): Author # 查询作者信息
-  allAuthor: [Author]
+type Query { 
+  author(id: Int!): Author 
+  allAuthor(limit: Int, offset: Int): [Author]
 }
 type Mutation{
   updateAuthor(id: Int!, firstName: String!): Author
+  addAuthor(input: addAuthorInput!): Author
   deleteAuthor(id: Int!): [Author]
 }
+
+input addAuthorInput {
+  firstName: String!
+  lastName: String!
+}
+
 `;
 
 const schema = makeExecutableSchema({typeDefs, resolvers});
-console.log('----------schema-----------');
-console.log(schema)
-console.log('----------schema-----------');
 
 export default schema;
