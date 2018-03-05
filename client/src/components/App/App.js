@@ -123,6 +123,9 @@ const queryDef = gql`
     query getAuthor($id: Int!, $limit: Int, $offset: Int){
         author(id: $id){
             ...AuthorInfo
+            authorDetail{
+             age
+            }
         },
         allAuthor(limit: $limit, offset: $offset) {
             ... on Author{
