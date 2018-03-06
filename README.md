@@ -1,5 +1,6 @@
 # GraphQL
-quick start
+### Quick Start
+全局安装`nodemon`、`docsify-cli`
 ```
 git clone https://github.com/MrHjf/GraphQL.git
 npm install
