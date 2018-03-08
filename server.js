@@ -5,7 +5,6 @@ import {
 } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import schema from './src/schema/schema';    // 定义GraphQL查询格式
-
 const GRAPHQL_PORT = 3002;
 
 const graphQLServer = express();
@@ -20,8 +19,10 @@ graphQLServer.use('/', function(req, res, next) {
     else next();
 });
 
-graphQLServer.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));    // 实现GraphQL接口功能
-graphQLServer.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));    // 实现GraphQL浏览器调试界面
+graphQLServer.use('/graphql', bodyParser.json(), graphqlExpress(req => ({ schema, context: req })));
+   // 实现GraphQL接口功能
+graphQLServer.use('/graphiql',graphiqlExpress({ endpointURL: '/graphql' }));
+// 实现GraphQL浏览器调试界面
 
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(
     `GraphiQL is now running on http://localhost:${GRAPHQL_PORT}/graphiql`

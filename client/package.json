@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.2.3",
     "apollo-cache-inmemory": "^1.1.7",
     "apollo-client": "^2.2.2",
     "apollo-client-preset": "^1.0.8",
@@ -95,9 +96,15 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
     ]
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.6.5"
   }
 }

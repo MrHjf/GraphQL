@@ -21,10 +21,13 @@
     "express-graphql": "^0.6.11",
     "graphql": "^0.12.3",
     "graphql-tools": "^2.20.0",
-    "react-apollo": "^2.0.4",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.2",
     "react": "^16.2.0",
+    "react-apollo": "^2.0.4",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react-scripts": "1.1.0",
+    "sequelize": "^4.35.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

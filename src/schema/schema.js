@@ -12,32 +12,45 @@ type AuthorDetail{
   age: Int
 }
 type Author implements AuthorInterface{
-  id: Int
+  id: String
   firstName: String
-  lastName: String
+  username: String
+  email: String
+  phone: String
   posts: [Post],
   authorDetail: AuthorDetail,
 }
 type Post {
-  id: Int
+  id: String
   title: String
-  text: String
-  views: Int
-  author: Author
+  content: String
+  user_id: String
+}
+type AuthorList{
+    rows: [Author]
+    count: Int
+}
+type Response{
+    status: String
+    result: String
+    err: String
 }
 type Query { 
   author(id: Int!): Author 
-  allAuthor(limit: Int, offset: Int): [Author]
+  allAuthor(limit: Int, offset: Int): AuthorList
 }
 type Mutation{
   updateAuthor(id: Int!, firstName: String!): Author
-  addAuthor(input: addAuthorInput!): Author
-  deleteAuthor(id: Int!): [Author]
+  addAuthor(input: addAuthorInput!): Response
+  deleteAuthor(id: String!): Response
 }
 
 input addAuthorInput {
-  firstName: String!
-  lastName: String!
+  username: String!
+  email: String!
+  phone: String!
+  title: String
+  content: String
 }
 
 `;
