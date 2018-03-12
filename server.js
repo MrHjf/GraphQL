@@ -5,6 +5,7 @@ import {
 } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import schema from './src/schema/schema';    // 定义GraphQL查询格式
+import mongoose from 'mongoose';
 const GRAPHQL_PORT = 3002;
 
 const graphQLServer = express();

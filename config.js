@@ -5,5 +5,12 @@ module.exports = {
         password: 'hjf111111', // 口令
         host: 'localhost', // 主机名
         port: 3306 // 端口号，MySQL默认3306
+    },
+    mongodb: {
+        database: 'graphqldemo',
+        username: 'hjf',
+        password: '111111',
+        host: 'localhost',
+        port: 27017
     }
 };

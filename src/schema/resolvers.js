@@ -44,7 +44,7 @@ const resolvers = {
     Author: {
         // 定义author中的posts
         posts(author) {
-            return service.getPostsByAuthorId(author.id);
+            return service.getPostsByAuthorId(author.id || author._id);
         },
     },
     // Post: {

@@ -13,6 +13,7 @@ type AuthorDetail{
 }
 type Author implements AuthorInterface{
   id: String
+  _id: String
   firstName: String
   username: String
   email: String
@@ -22,6 +23,7 @@ type Author implements AuthorInterface{
 }
 type Post {
   id: String
+  _id: String
   title: String
   content: String
   user_id: String
