@@ -1,5 +1,6 @@
 # GraphQL
 ### Quick Start
+该demo是基于node + express + mysql + sequelize + graphql + react + ant-design
 全局安装`nodemon`、`docsify-cli`
 ```
 git clone https://github.com/MrHjf/GraphQL.git
