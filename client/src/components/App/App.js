@@ -9,7 +9,8 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 const queryDef = gql`
     fragment AuthorInfo on Author {
-        id,
+        id
+        _id
         username
         email
         phone
@@ -17,6 +18,7 @@ const queryDef = gql`
             title
             content
             id
+            _id
             user_id
         }
     }
@@ -248,7 +250,7 @@ class AuthorList extends Component {
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <Popconfirm title="Are you sure delete?" onConfirm={() => this.confirm(text.id)}
+                    <Popconfirm title="Are you sure delete?" onConfirm={() => this.confirm(text._id)}
                                 onCancel={this.cancel} okText="Yes" cancelText="No">
                         <Button type="danger">删除</Button>
                     </Popconfirm>
@@ -270,8 +272,8 @@ class AuthorList extends Component {
                 <div>
                     <Table columns={columns}
                            dataSource={allAuthor && allAuthor.rows}
-                           pagination={{defaultPageSize: limit, total: allAuthor.count}}
-                           rowKey={record => record.id}
+                           pagination={{defaultPageSize: limit, total: allAuthor && allAuthor.count}}
+                           rowKey={record => record._id}
                            onChange={this._handlePage.bind(this)}/>
 
                     <WrappedAddAuthorForm/>
